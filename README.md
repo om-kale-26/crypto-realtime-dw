@@ -18,9 +18,9 @@ Then open http://localhost:3000 (Grafana) and import grafana/dashboard.json.
 
 ## Results
 - Symbols tracked: 4 (BTC, ETH, SOL, BNB)
-- Throughput: [X] ticks/sec
-- End-to-end latency: ~[X] ms from Binance trade to queryable row
-- Rows collected: [X]
+- Throughput: 36.1 ticks/sec
+- End-to-end latency: ~810(avg)ms from Binance trade to queryable row
+- Rows collected: 210389(Total trades)
 
 ## Design decisions
 - ClickHouse: a columnar database built for fast analytics on event streams.
