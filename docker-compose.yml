@@ -1,0 +1,45 @@
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.8
+    container_name: ch_server
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ch_data:/var/lib/clickhouse
+      - ./clickhouse/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      CLICKHOUSE_DB: crypto
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: "crypto123"
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+
+  ingestion:
+    build: ./ingestion
+    container_name: crypto_producer
+    depends_on:
+      - clickhouse
+    restart: unless-stopped
+    environment:
+      CLICKHOUSE_HOST: clickhouse
+      CLICKHOUSE_PORT: 8123
+      CLICKHOUSE_PASSWORD: "crypto123"
+      SYMBOLS: "btcusdt,ethusdt,solusdt,bnbusdt"
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: crypto_grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - clickhouse
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
+    volumes:
+      - grafana_data:/var/lib/grafana
+volumes:
+  ch_data:
+  grafana_data:
