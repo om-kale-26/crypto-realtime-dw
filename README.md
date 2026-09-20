@@ -1,4 +1,4 @@
-@'
+
 # CryptoStream DW: Real-Time Crypto Data Warehouse
 
 Live Binance trades streamed into ClickHouse, aggregated in real time
@@ -33,4 +33,3 @@ Passwords in docker-compose.yml are for local demo use only.
 
 ## Future improvements
 Kafka between producer and ClickHouse, price-move alerts, a second exchange.
-'@ | Set-Content -Path README.md -Encoding ascii
